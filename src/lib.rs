@@ -18,22 +18,20 @@ impl zed::Extension for PrismaModelContextExtension {
         let latest_version = zed::npm_package_latest_version(PRISMA_PACKAGE)?;
         let installed_version = zed::npm_package_installed_version(PRISMA_PACKAGE)?;
 
-        if installed_version.as_deref() != Some(latest_version) {
-            zed::npm_install_package(PRISMA_PACKAGE, latest_version)?;
+        if installed_version.as_ref() != Some(&latest_version) {
+            zed::npm_install_package(PRISMA_PACKAGE, &latest_version)?;
         }
 
         Ok(zed::Command {
             command: zed::node_binary_path()?,
             args: vec![
                 std::env::current_dir()
-                    .expect("current directory must exist and have valid permissions")
+                    .map_err(|err| err.to_string())?
                     .join(CLI_PATH)
                     .to_str()
-                    .expect("path must be valid utf-8")
+                    .ok_or("Prisma CLI path must be valid UTF-8")?
                     .into(),
-                "platform".into(),
                 "mcp".into(),
-                "--early-access".into(),
             ],
             env: std::env::vars().collect(),
         })
