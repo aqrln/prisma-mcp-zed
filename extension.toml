@@ -1,7 +1,7 @@
 id = "prisma-mcp"
 name = "Prisma Context Server"
 description = "Model Context Server for Prisma"
-version = "0.1.0"
+version = "0.2.0"
 schema_version = 1
 authors = ["Alexey Orlenko <alex@aqrln.net>"]
 repository = "https://github.com/aqrln/prisma-mcp-zed"
